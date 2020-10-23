@@ -63,15 +63,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CompositeShape.cs" />
-    <Compile Include="Assets\Scripts\CompositeShapeData.cs" />
-    <Compile Include="Assets\Scripts\Maths2D.cs" />
-    <Compile Include="Assets\Scripts\Polygon.cs" />
-    <Compile Include="Assets\Scripts\Shape.cs" />
-    <Compile Include="Assets\Scripts\Triangulator.cs" />
-    <Compile Include="Assets\Scripts\Triangulator2.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\CompositeShape.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\CompositeShapeData.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\Maths2D.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\Polygon.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\Shape.cs" />
+    <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\Triangulator.cs" />
     <Compile Include="Assets\Shape.cs" />
     <Compile Include="Assets\ShapeCreator.cs" />
+    <Compile Include="Assets\Triangulator2.cs" />
     <Compile Include="Assets\UtilTool.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/Projs/ShapeEditor/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
