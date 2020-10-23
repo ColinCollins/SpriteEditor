@@ -5,13 +5,59 @@ using UnityEngine;
 [System.Serializable]
 public class Shape
 {
+	/// <summary>
+	/// 0 -> oriPosition, 1 -> ltPos, 2 -> rtPos, 3 -> rbPos
+	/// </summary>
 	[HideInInspector]
 	public List<Vector3> points = new List<Vector3>();
+	[HideInInspector]
+	public Vector2 centerPos;
+
+	public float seed = 0;
+	public float minLimit = 0.3f;
+	public int maxCount = 10;
 
 	public Color shapeColor;
-	public List<GameObject> generate = new List<GameObject>();
+	public List<GameObject> stuffs = new List<GameObject>();
 
 	private GameObject quad;
+	private List<GameObject> generator = new List<GameObject>();
+
+	public void UpdateRect(int pointIndex) 
+	{
+		int mi1 = -1;
+		int mi2 = -1;
+
+		switch (pointIndex) 
+		{
+			case 0:
+				mi1 = 1;
+				mi2 = 3;
+				break;
+			case 1:
+				mi1 = 0;
+				mi2 = 2;
+				break;
+			case 2:
+				mi1 = 3;
+				mi2 = 1;
+				break;
+			case 3:
+				mi1 = 2;
+				mi2 = 0;
+				break;
+			default:
+				return;
+		}
+
+		Vector3 p = points[mi1];
+		p.x = points[pointIndex].x;
+		points[mi1] = p;
+
+		p = points[mi2];
+		p.z = points[pointIndex].z;
+		points[mi2] = p;
+	}
 
 	public void DrawShape()
 	{
@@ -54,38 +100,61 @@ public class Shape
 
 	public void RandomGenerate()
 	{
-		if (quad == null)
-			return;
-
-		List<TriangleData> triangles = new List<TriangleData>();
-
-		Mesh mesh = quad.GetComponent<MeshFilter>().mesh;
-		List<Vector3> vertices = new List<Vector3>();
-		mesh.GetVertices(vertices);
-		int[] indices = mesh.triangles;
-
-		for (int i = 0; i < indices.Length; i += 3) 
+		for (int i = 0; i < generator.Count; i++) 
 		{
-			TriangleData triangle = new TriangleData();
-			triangle.a = vertices[indices[i]];
-			triangle.b = vertices[indices[i + 1]];
-			triangle.c = vertices[indices[i + 2]];
-
-			triangles.Add(triangle);
+			GameObject.DestroyImmediate(generator[i]);
 		}
+		generator.Clear();
 
-		// rotate triangle 
-		for (int i = 0; i < triangles.Count; i++) 
+		// generate at rect area 
+		Vector3 oriPos = points[0];
+		Vector3 rtPos = points[2];
+
+		float width = rtPos.x - oriPos.x;
+		float height = rtPos.z - oriPos.z;
+
+		for (int x = 0; x < maxCount; x++) 
 		{
-			triangles[i].GenRandomPoint(100);	
+			for (int y = 0; y < maxCount; y++) 
+			{
+				float dx = width * x / maxCount;
+				float dy = height * y / maxCount;
+				float re = Mathf.PerlinNoise(dx + seed, dy + seed);
+				
+				if (re > minLimit)
+				{
+					GenerateStuff(dx - width / 2, dy - height / 2);
+				} 
+			}
 		}
-
-		// make calculate point 
-		// rotate back ?
-		// get point 
 	}
 
+	private void GenerateStuff(float x, float y) 
+	{
+		GameObject tmpObj;
+		if (stuffs.Count > 0)
+		{
+			tmpObj = GameObject.Instantiate(stuffs[Mathf.FloorToInt(Mathf.Clamp(Random.Range(0, 1), 0, stuffs.Count))]);
+		}
+		else 
+		{
+			tmpObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		}
 
+		tmpObj.transform.SetParent(quad.transform);
+		tmpObj.transform.localPosition = new Vector3(x, 0, y);
+		tmpObj.transform.localScale = Vector3.one;
+
+		generator.Add(tmpObj);
+	}
+
+	public void Delete() 
+	{
+		if (quad != null)
+			GameObject.DestroyImmediate(quad);
+
+		generator.Clear();
+	}
 }
 
 
@@ -107,8 +176,8 @@ public class TriangleData
 		
 		float degree = getLineRotateAngle(tb);
 
+		// rotate
 		
-
 		return null;
 	}
 
@@ -117,5 +186,4 @@ public class TriangleData
 		Vector2 tb2v = tb.ToXZ();
 		return Mathf.Acos(Vector2.Dot(tb2v.normalized, Vector2.up));
 	}
-
 }

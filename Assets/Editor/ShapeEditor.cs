@@ -10,14 +10,14 @@ public class ShapeEditor : Editor
 	SelectionInfo selectionInfo;
 	bool shapeChangedSinceLastRepaint;
 
-	public override void OnInspectorGUI() 
+	public override void OnInspectorGUI()
 	{
 		base.OnInspectorGUI();
 
 		int shapeDeleteIndex = -1;
 		shapeCreator.ShowShapeList = EditorGUILayout.Foldout(shapeCreator.ShowShapeList, "Show Shapes List");
 
-		if (shapeCreator.ShowShapeList) 
+		if (shapeCreator.ShowShapeList)
 		{
 			for (int i = 0; i < shapeCreator.shapes.Count; i++)
 			{
@@ -35,13 +35,14 @@ public class ShapeEditor : Editor
 					shapeDeleteIndex = i;
 				}
 
-				if (GUILayout.Button("Draw")) 
+				if (GUILayout.Button("Draw"))
 				{
 					shapeCreator.shapes[i].DrawShape();
 				}
 
-				if (GUILayout.Button("Generate")) 
+				if (GUILayout.Button("Generate"))
 				{
+					Undo.RecordObject(shapeCreator, "Random generate");
 					shapeCreator.shapes[i].RandomGenerate();
 				}
 
@@ -49,14 +50,15 @@ public class ShapeEditor : Editor
 			}
 		}
 
-		if (shapeDeleteIndex != -1) 
+		if (shapeDeleteIndex != -1)
 		{
 			Undo.RecordObject(shapeCreator, "Delete shape");
+			shapeCreator.shapes[shapeDeleteIndex].Delete();
 			shapeCreator.shapes.RemoveAt(shapeDeleteIndex);
 			selectionInfo.shapeIndex = Mathf.Clamp(selectionInfo.shapeIndex, 0, shapeCreator.shapes.Count - 1);
 		}
 
-		if (GUI.changed) 
+		if (GUI.changed)
 		{
 			shapeChangedSinceLastRepaint = true;
 			SceneView.RepaintAll();
@@ -106,6 +108,19 @@ public class ShapeEditor : Editor
 		shapeChangedSinceLastRepaint = true;
 	}
 
+	void CreateDefaultRect(Vector3 mousePosition) 
+	{
+		float tr = shapeCreator.handleRadius * 3;
+		Vector3 rtPos = new Vector3(mousePosition.x + tr, 0, mousePosition.z + tr);
+		Vector3 rbPos = new Vector3(mousePosition.x + tr, 0, mousePosition.z);
+		Vector3 ltPos = new Vector3(mousePosition.x, 0, mousePosition.z + tr);
+
+		CreateNewPoint(mousePosition);
+		CreateNewPoint(ltPos);
+		CreateNewPoint(rtPos);
+		CreateNewPoint(rbPos);
+	}
+
 	void SelectPointUnderMouse()
 	{
 		selectionInfo.pointIsSelected = true;
@@ -141,7 +156,6 @@ public class ShapeEditor : Editor
 			HandleShiftLeftMouseDown(mousePosition);
 		}
 
-
 		if (guiEvent.type == EventType.MouseUp && guiEvent.button == 0)
 		{
 			HandleLeftMouseUp(mousePosition);
@@ -152,10 +166,10 @@ public class ShapeEditor : Editor
 			HandleLeftMouseDrag(mousePosition);
 		}
 
-		if (guiEvent.type == EventType.MouseUp && guiEvent.button == 2 && guiEvent.modifiers == EventModifiers.None)
-		{
-			HandleMiddleMouseUp(mousePosition);
-		}
+		//if (guiEvent.type == EventType.MouseUp && guiEvent.button == 2 && guiEvent.modifiers == EventModifiers.None)
+		//{
+		//	 HandleMiddleMouseUp(mousePosition);
+		//}
 
 		if (!selectionInfo.pointIsSelected)
 			UpdateMouseOverInfo(mousePosition);
@@ -164,7 +178,7 @@ public class ShapeEditor : Editor
 	void HandleShiftLeftMouseDown(Vector3 mousePosition)
 	{
 		CreateNewShape();
-		CreateNewPoint(mousePosition);
+		CreateDefaultRect(mousePosition);
 	}
 
 	void HandleLeftMouseDown(Vector3 mousePosition)
@@ -172,22 +186,15 @@ public class ShapeEditor : Editor
 		if (shapeCreator.shapes.Count == 0)
 		{
 			CreateNewShape();
+			CreateDefaultRect(mousePosition);
 		}
 
 		SelectedShapeUnderMouse();
 
-		if (!selectionInfo.mouseIsOverPoint)
-		{
-			CreateNewPoint(mousePosition);
-		}
-		else
+		if (selectionInfo.mouseIsOverPoint)
 		{
 			SelectPointUnderMouse();
 		}
-
-		selectionInfo.pointIsSelected = true;
-		selectionInfo.positionAtStartOfDrag = mousePosition;
-		shapeChangedSinceLastRepaint = true;
 	}
 
 	void HandleLeftMouseUp(Vector3 mousePosition)
@@ -196,8 +203,8 @@ public class ShapeEditor : Editor
 		{
 			SelectedShape.points[selectionInfo.pointIndex] = selectionInfo.positionAtStartOfDrag;
 			Undo.RecordObject(shapeCreator, "Move point");
-
 			SelectedShape.points[selectionInfo.pointIndex] = mousePosition;
+
 			selectionInfo.pointIsSelected = false;
 			selectionInfo.pointIndex = -1;
 			shapeChangedSinceLastRepaint = true;
@@ -209,6 +216,7 @@ public class ShapeEditor : Editor
 		if (selectionInfo.pointIsSelected)
 		{
 			SelectedShape.points[selectionInfo.pointIndex] = mousePosition;
+			SelectedShape.UpdateRect(selectionInfo.pointIndex);
 			shapeChangedSinceLastRepaint = true;
 		}
 	}
@@ -262,33 +270,34 @@ public class ShapeEditor : Editor
 		}
 		else
 		{
-			int mouseOverLineIndex = -1;
-			float closestLineDst = shapeCreator.handleRadius;
+			//int mouseOverLineIndex = -1;
+			//float closestLineDst = shapeCreator.handleRadius;
 
-			for (int shapeIndex = 0; shapeIndex < shapeCreator.shapes.Count; shapeIndex++)
-			{
-				Shape currentShape = shapeCreator.shapes[shapeIndex];
-				for (int i = 0; i < currentShape.points.Count; i++)
-				{
-					Vector3 nextPointInShape = currentShape.points[(i + 1) % currentShape.points.Count];
-					float dstFromMouseToLine = HandleUtility.DistancePointToLineSegment(mousePosition.ToXZ(), currentShape.points[i].ToXZ(), nextPointInShape.ToXZ());
+			//for (int shapeIndex = 0; shapeIndex < shapeCreator.shapes.Count; shapeIndex++)
+			//{
+			//	Shape currentShape = shapeCreator.shapes[shapeIndex];
+			//	for (int i = 0; i < currentShape.points.Count; i++)
+			//	{
+			//		Vector3 nextPointInShape = currentShape.points[(i + 1) % currentShape.points.Count];
+			//		float dstFromMouseToLine = HandleUtility.DistancePointToLineSegment(mousePosition.ToXZ(), currentShape.points[i].ToXZ(), nextPointInShape.ToXZ());
 
-					if (dstFromMouseToLine < closestLineDst)
-					{
-						closestLineDst = dstFromMouseToLine;
-						mouseOverLineIndex = i;
-						mouseOverShapeIndex = shapeIndex;
-					}
-				}
+			//		if (dstFromMouseToLine < closestLineDst)
+			//		{
+			//			closestLineDst = dstFromMouseToLine;
+			//			mouseOverLineIndex = i;
+			//			mouseOverShapeIndex = shapeIndex;
+			//		}
+			//	}
 
-			}
-			if (selectionInfo.lineIndex != mouseOverLineIndex)
-			{
-				selectionInfo.lineIndex = mouseOverLineIndex;
-				selectionInfo.mouseIsOverLine = mouseOverLineIndex != -1;
-				selectionInfo.mouseOverShapeIndex = mouseOverShapeIndex;
-				shapeChangedSinceLastRepaint = true;
-			}
+			//}
+			// Mouse Over Line 
+			//if (selectionInfo.lineIndex != mouseOverLineIndex)
+			//{
+			//	selectionInfo.lineIndex = mouseOverLineIndex;
+			//	selectionInfo.mouseIsOverLine = mouseOverLineIndex != -1;
+			//	selectionInfo.mouseOverShapeIndex = mouseOverShapeIndex;
+			//	shapeChangedSinceLastRepaint = true;
+			//}
 		}
 	}
 
