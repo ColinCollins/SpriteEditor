@@ -149,6 +149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65b98ca36f67b940820ab7e6daa9e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testGradient:
+    blendMode: 0
+    randomizeColor: 0
+    keys:
+    - color: {r: 1, g: 1, b: 1, a: 1}
+      time: 0
 --- !u!4 &19517322
 Transform:
   m_ObjectHideFlags: 0
@@ -236,7 +242,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 1.285698e-39, w: -1.14e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
