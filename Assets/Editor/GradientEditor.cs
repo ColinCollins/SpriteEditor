@@ -18,7 +18,6 @@ public class GradientEditor : EditorWindow
 	bool needsRepaint;
 	int selectedKeyIndex;
 
-
 	void draw() 
 	{
 		gradientPreviewRect = new Rect(borderSize, borderSize, position.width - borderSize * 2, 25);
@@ -72,7 +71,7 @@ public class GradientEditor : EditorWindow
 					mouseDownOverKey = true;
 					selectedKeyIndex = i;
 					needsRepaint = true;
-					break;
+					break; 
 				}
 			}
 
