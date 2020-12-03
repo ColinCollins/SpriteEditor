@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\AssetScriptTemplate.cs" />
+    <Compile Include="Assets\Editor\CreateAssets.cs" />
     <Compile Include="Assets\Editor\GradientDrawer.cs" />
     <Compile Include="Assets\Editor\GradientEditor.cs" />
     <Compile Include="Assets\Editor\ShapeEditor.cs" />

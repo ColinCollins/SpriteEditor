@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
+/// <summary>
+/// 界面图形编辑脚本，目前仅支持矩形形状
+/// </summary>
 [CustomEditor(typeof(ShapeCreator))]
 public class ShapeEditor : Editor
 {

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Rendering;
 
+/// <summary>
+/// 颜色渐变的窗口
+/// </summary>
 public class GradientEditor : EditorWindow
 {
 	CustomGradient gradient;
@@ -38,7 +41,6 @@ public class GradientEditor : EditorWindow
 			}
 
 			EditorGUI.DrawRect(keyRect, key.Colour);
-
 			keyRects[i] = keyRect;
 		}
 
@@ -94,11 +96,11 @@ public class GradientEditor : EditorWindow
 		if (guiEvent.type == EventType.MouseDrag && mouseDownOverKey && guiEvent.button == 0)
 		{
 			float keyTime = Mathf.InverseLerp(gradientPreviewRect.x, gradientPreviewRect.xMax, guiEvent.mousePosition.x);
-			selectedKeyIndex = gradient.UpdateKeyTime(selectedKeyIndex, keyTime);
+			selectedKeyIndex = gradient. UpdateKeyTime(selectedKeyIndex, keyTime);
 			needsRepaint = true;
 		}
 
-		if (guiEvent.keyCode == KeyCode.Space && guiEvent.type == EventType.KeyDown)
+		if ((guiEvent.keyCode == KeyCode.D || guiEvent.keyCode == KeyCode.Delete) && guiEvent.type == EventType.KeyDown)
 		{
 			OnSpaceKeyDown();
 		}

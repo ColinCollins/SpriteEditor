@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// 渐变颜色绘制 Property
+/// </summary>
 [CustomPropertyDrawer(typeof(CustomGradient))]
 public class GradientDrawer : PropertyDrawer
 {
@@ -21,10 +24,8 @@ public class GradientDrawer : PropertyDrawer
 		float labelWidth = GUI.skin.label.CalcSize(label).x + 5f;
 		Rect textureRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, position.height);
 
-
 		if (guiEvent.type == EventType.Repaint)
 		{
-
 			GUI.Label(position, label.text);
 			GUIStyle gradientStyle = new GUIStyle();
 			gradientStyle.normal.background = gradient.GetTexture((int)position.width);
