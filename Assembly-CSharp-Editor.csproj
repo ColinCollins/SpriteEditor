@@ -63,8 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Editor\AssetScriptTemplate.cs" />
-    <Compile Include="Assets\Editor\CreateAssets.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Editor\AssetsScriptGenerator.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Editor\BuildExcelInspector.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Editor\CreateAssetsWindow.cs" />
     <Compile Include="Assets\Editor\GradientDrawer.cs" />
     <Compile Include="Assets\Editor\GradientEditor.cs" />
     <Compile Include="Assets\Editor\ShapeEditor.cs" />
@@ -295,6 +296,15 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/Excel.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>E:/Projs/ShapeEditor/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

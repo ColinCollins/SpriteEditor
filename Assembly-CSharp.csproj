@@ -63,6 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AssetScriptWithExcel\Scripts\AssetScriptSetting.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Scripts\AssetScriptTemplate.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Scripts\BasicTemplate.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Scripts\Console.cs" />
+    <Compile Include="Assets\AssetScriptWithExcel\Scripts\Title.cs" />
     <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\CompositeShape.cs" />
     <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\CompositeShapeData.cs" />
     <Compile Include="Assets\Ear-Clipping-Triangulation-master\Scripts\Maths2D.cs" />
@@ -272,6 +277,15 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>E:/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>E:/Projs/ShapeEditor/Assets/Plugins/Excel.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>E:/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
