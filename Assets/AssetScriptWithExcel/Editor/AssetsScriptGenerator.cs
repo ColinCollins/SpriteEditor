@@ -31,7 +31,7 @@ public static class AssetsScriptGenerator
 
 		if (setting.Template == null) 
 		{
-			setting.Template = (TextAsset)AssetDatabase.LoadAssetAtPath("Assets/Scripts/AssetScriptTemplate.cs", typeof(TextAsset));
+			setting.Template = (TextAsset)AssetDatabase.LoadAssetAtPath("Assets/AssetScriptWithExcel/Scripts/AssetScriptTemplate.cs", typeof(TextAsset));
 		}
 
 		string content = setting.Template.text.Replace("AssetScriptTemplate", setting.TypeName);
